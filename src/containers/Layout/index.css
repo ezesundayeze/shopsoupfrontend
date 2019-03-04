@@ -1,0 +1,23 @@
+body {
+  padding-top: 56px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+a {
+  text-decoration: none !important;
+  color: rgb(179, 179, 179) !important;
+}
+
+.left-sidebar {
+  padding-top: 10px;
+}
+
+.add-to-cart {
+  float: right;
+  height: 100% !important ;
+}
