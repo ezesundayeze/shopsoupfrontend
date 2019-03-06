@@ -1,21 +1,32 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 class SideBar extends Component {
-  state = {};
+  state = {
+    categories: []
+  };
+
+  componentDidMount() {
+    fetch("https://shopsoup.herokuapp.com/api/v1/category/")
+      .then(data => {
+        return data.json();
+      })
+      .then(categories => {
+        this.setState({ categories });
+      });
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="sidebar-top-space left-sidebar" />
         <div className="list-group">
-          <a href="##" className="list-group-item">
-            Category1
-          </a>
-          <a href="##" className="list-group-item">
-            Category
-          </a>
-          <a href="##" className="list-group-item">
-            Category 3
-          </a>
+          {this.state.categories.map(data => {
+            return (
+              <a key={data.id} href="##" className="list-group-item">
+                {data.name}
+              </a>
+            );
+          })}
         </div>
       </React.Fragment>
     );

@@ -6,7 +6,13 @@ class Products extends Component {
     super(props);
     this.state = {
       products: [],
-      isLoaded: false
+      isLoaded: false,
+      addToCartBtnColor: "btn-primary",
+      disabled: false
+    };
+
+    this.style = {
+      "pointer-events": "none"
     };
   }
 
@@ -18,6 +24,15 @@ class Products extends Component {
     } else {
       localStorage.setItem("cart", JSON.stringify([...this.props.items, val]));
     }
+
+    //change color
+    this.setState({ disabled: true });
+    console.log();
+  }
+
+  btnState() {
+    console.log(this.props.items.map(data => data.btnState));
+    return this.props.items.map(data => data.btnState);
   }
 
   getProducts() {
@@ -64,12 +79,18 @@ class Products extends Component {
 
   render() {
     return (
-      <div>
+      <div className="row">
+
+
+    
+        
+            
+ 
         {this.state.isLoaded
           ? this.state.products.map(data => {
               return (
-                <div className="col-lg-4 col-md-1 mb-4">
-                  <div key={data.id} className="card h-100">
+                <div key={data.id} className="col-lg-4 col-md-1 mb-4">
+                  <div className="card h-100">
                     <a href="##">
                       <img
                         className="card-img-top"
@@ -80,7 +101,7 @@ class Products extends Component {
 
                     <div className="card-body">
                       <h4 className="card-title">
-                        <a href="##">{data.title}</a>
+                        <a href={`/details/${data.id}`}>{data.title}</a>
                       </h4>
                       <h5>${data.price}</h5>
                       <p className="card-text">{data.description}</p>
@@ -90,17 +111,22 @@ class Products extends Component {
                       <small className="text-muted">
                         &#9733; &#9733; &#9733; &#9733; &#9734;
                       </small>
-                      <span
+                      <button
                         onClick={this.onAddItem.bind(this, {
                           id: this.props.items.length + 1,
                           title: data.title,
                           description: data.description,
-                          price: data.price
+                          price: data.price,
+                          qantity: 1
                         })}
-                        className="btn btn-primary add-to-cart"
+                        className={`btn ${
+                          this.state.addToCartBtnColor
+                        } add-to-cart`}
+                        id="add-to-cart"
+                        disabled={""}
                       >
                         Add to Cart
-                      </span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -108,6 +134,10 @@ class Products extends Component {
             })
           : "Loading..."}
       </div>
+
+         
+       
+    
     );
   }
 }

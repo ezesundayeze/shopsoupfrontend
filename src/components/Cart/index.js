@@ -9,45 +9,38 @@ class Cart extends Component {
 
         this.style = {
             color:"orange"
-        
         }
-      
-
         this.priceReducer = (accumulator, currentValue)=>(
             accumulator+currentValue
          )
     }
  
     getCartDetails(){
-        let cart = JSON.parse(localStorage.getItem("cart"))
-        return cart
+		if(localStorage.cart){
+			let cart = JSON.parse(localStorage.getItem("cart"))
+			return cart
+		}
+       
     }
 
 
     totalPrice(){
-        const priceInCart  = [...this.getCartDetails().map((data)=>(data.price))]
-        return priceInCart.reduce(this.priceReducer)
+		if(localStorage.cart){
+			const priceInCart  = [...this.getCartDetails().map((data)=>(data.price))]
+			return priceInCart.reduce(this.priceReducer)
+		}
+       
     }
 
     removeItem(id){
-        const items  = this.getCartDetails()
+        // const items  = this.getCartDetails()
             // localStorage.setItem("cart", items)
-     
-
-            console.log("items" + items)
-            console.log(localStorage.getItem("cart"))
-
     }
     
     onUpdateQuantity(e){
-        console.log(e.target.value)
+		console.log(e.target.value)
     }
 
-
-
-    
-
- 
 
     render() { 
         
@@ -62,10 +55,11 @@ class Cart extends Component {
 		        <div className="content">
 	 				<div className="row">
 	 					<div className="col-md-12 col-lg-8">
-	 						<div className="items">
-                             {this.getCartDetails().map((data)=>(
+							 <div className="items">
+							 {!localStorage.cart? "Your Cart is Empty" : this.getCartDetails().map((data)=>(
                                  
-                                 <div className="product">
+                                 <div key={data.id} className="product">
+								 
 				 					<div className="row">
 					 					<div className="col-md-3">
 					 						<img alt="" className="img-fluid mx-auto d-block image" src="./image.jpg" />
@@ -84,7 +78,7 @@ class Cart extends Component {
 							 						</div>
 							 						<div className="col-md-4 quantity">
 							 							<label htmlFor="quantity">Quantity:</label>
-							 							<input id="quantity" type="number" onChange={this.onUpdateQuantity.bind(this)} className="form-control quantity-input" />
+							 							<input id="quantity" value={data.qantity} type="number" onChange={this.onUpdateQuantity.bind(this)} className="form-control quantity-input" />
 							 						</div>
                                                      <div className="col-md-1 quantity">
 							 							{/* <label onClick={this.removeItem.bind(this, data.id)}>Remove</label> */}
@@ -101,6 +95,7 @@ class Cart extends Component {
                                
                                  
                                  ))}
+                             
 				 				
 				 			</div>
 			 			</div>

@@ -1,10 +1,29 @@
 import React, { Component } from "react";
 import MenuBar from "./../../components/Menu";
 import Sidebar from "./../../components/LeftSidebar";
-import Footer from "./../../components/Footer";
 
 class Detail extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: []
+    };
+  }
+
+  componentDidMount() {
+    fetch(
+      "https://shopsoup.herokuapp.com/api/v1/product/" +
+        this.props.match.params.id
+    )
+      .then(data => {
+        return data.json();
+      })
+      .then(products => {
+        this.setState({ isLoaded: true });
+        this.setState({ products });
+        // this.props.dispatch({ type: "get_products", payload: [products] });
+      });
+  }
 
   render() {
     return (
@@ -25,13 +44,10 @@ class Detail extends Component {
                     alt=""
                   />
                   <div className="card-body">
-                    <h3 className="card-title">Product Name</h3>
-                    <h4>$24.99</h4>
+                    <h3 className="card-title">{this.state.products.title}</h3>
+                    <h4>${this.state.products.price}</h4>
                     <p className="card-text">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Sapiente dicta fugit fugiat hic aliquam itaque facere,
-                      soluta. Totam id dolores, sint aperiam sequi pariatur
-                      praesentium animi perspiciatis molestias iure, ducimus!
+                      {this.state.products.description}
                     </p>
                     <span className="text-warning">
                       &#9733; &#9733; &#9733; &#9733; &#9734;
@@ -43,7 +59,6 @@ class Detail extends Component {
             </div>
           </div>
         </div>
-        <Footer />
       </React.Fragment>
     );
   }
